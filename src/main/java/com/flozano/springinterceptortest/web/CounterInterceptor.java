@@ -2,6 +2,7 @@ package com.flozano.springinterceptortest.web;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,10 +25,10 @@ public class CounterInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		LOGGER.info(
-				"Invoked prehandle (request.isAsyncStarted()={}, syncInvocations={}, asyncInvocations={})",
-				request.isAsyncStarted(), getSyncInvocations(),
+				"Invoked prehandle (request.getDispatcherType()={}, syncInvocations={}, asyncInvocations={})",
+				request.getDispatcherType(), getSyncInvocations(),
 				getAsyncInvocations());
-		if (request.isAsyncStarted()) {
+		if (DispatcherType.ASYNC.equals(request.getDispatcherType())) {
 			asyncInvocations.incrementAndGet();
 		} else {
 			syncInvocations.incrementAndGet();
